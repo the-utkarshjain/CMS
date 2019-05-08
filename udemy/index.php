@@ -6,49 +6,98 @@ include("includes/classes/Post.php");
 
 if(isset($_POST['post'])){
 	$post = new Post($con, $userLoggedIn);
-	$post->submitPost($_POST['title'], $_POST['phone'], $_POST['email'],$_POST['post_text'], 'none');
+	$post->submitPost($_POST['title'], $_POST['phone'], $_POST['email'],$_POST['post_text'], 'none', $_POST['stipend'], $_POST['stipend_amount'], $_POST['interest']);
 }
 
 
- ?>
-	<div class="user_details column">
-		<a href="<?php echo $userLoggedIn; ?>">  <img src="<?php echo $user['profile_pic']; ?>"> </a>
+?>
 
-		<div class="user_details_left_right">
+<div class="row">
+
+	<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+
+		<div class="profile" style="text-align: center;">
+			<a href="<?php echo $userLoggedIn; ?>">  <img src="<?php echo $user['profile_pic']; ?>"> </a>
+			<br>
+
 			<a href="<?php echo $userLoggedIn; ?>">
-			<?php 
-			echo $user['first_name'] . " " . $user['last_name'];
+				<?php 
+				echo $user['first_name'] . " " . $user['last_name'];
 
-			 ?>
+				?>
 			</a>
 			<br>
+
 			<?php echo "Posts: " . $user['num_posts']. "<br>"; 
 			echo "Likes: " . $user['num_likes'];
 
 			?>
+			<br><br>
 		</div>
 
 	</div>
 
-	<div class="main_column column">
-		<form class="post_form" action="index.php" method="POST">
-			<p>Title: <input type="text" name="title" id="title" placeholder="Enter project title here"></p>
-			<p>Email: <input type="email" name="email" id="email" placeholder="Contact Email"></p>
-			<p>Phone number: <input type="text" name="phone" id="phone"></p>
-			
-			<textarea name="post_text" id="post_text" placeholder="Got something to say?"></textarea>
-			<input type="submit" name="post" id="post_button" value="Post">
-			<hr>
 
-		</form>
+	<div class= "col-xs-12 col-sm-12 col-md-10 col-lg-10">
+		<div class="create_project">
+			<h3> Create project </h3><hr>
+			<form class="post_form" action="index.php" method="POST">
+				<p>Title: <br><input type="text" name="title" id="title" placeholder="Enter project title here"></p>
+				<br>
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<p>Email: <br><input type="email" name="email" id="email" placeholder="Contact Email" style="width:80%;"></p>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<p>Phone: <br><input type="text" name="phone" id="phone" placeholder="Contact Number" style="width:80%"></p>
+					</div>
+				</div>
+				<br>
+				<textarea name="post_text" id="post_text" placeholder="Project description" required></textarea><br><br><br>
+
+				<p>Research area / Interest:<br> <input type="text" name="interest" id="interest"></p><br>
+
+				<p>Is stipend available? &nbsp;&nbsp;
+					<input type="radio" class="stipend" name="stipend" value="Yes" required> Yes &nbsp;
+					<input type="text" class="stipend_amount" name="stipend_amount" placeholder="Enter amount">
+					&nbsp;
+					<input type="radio" class="stipend" name="stipend" value="No" required> No
+				</p>
+
+				<script type="text/javascript">
+
+					$(".stipend_amount").hide();
+
+					$(document).ready(function(){
+						$(".stipend").change(function(){
+
+							var val = $('.stipend:checked').val();
+							if(val == "Yes"){
+								$(".stipend_amount").show("fast");
+								$(".stipend_amount").prop('required',true);
+							}
+							else{
+								$(".stipend_amount").hide("fast");
+								$(".stipend_amount").prop('required',false);
+							}
+						});
+					});	
+
+				</script>
+
+				<br>
+				<input type="submit" name="post" id="post_button" value="Post">
+
+			</form>
+		</div>
+
+		<hr style="border-color: grey">
 
 		<div class="posts_area"></div>
 		<img id="loading" src="assets/images/icons/loading.gif">
 
 
-	</div>
-
-	<script>
+		<script>
 	var userLoggedIn = '<?php echo $userLoggedIn; ?>';
 
 	$(document).ready(function() {
@@ -103,9 +152,8 @@ if(isset($_POST['post'])){
 
 	</script>
 
-
-
-
-	</div>
+</div>
+</div>
+</div>
 </body>
 </html>

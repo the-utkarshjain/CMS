@@ -8,26 +8,41 @@ class Post {
 		$this->user_obj = new User($con, $user);
 	}
 
-	public function submitPost($title, $phone, $email, $body, $user_to) {
+	public function submitPost($title, $phone, $email, $body, $user_to, $stipend, $stipend_amount, $interest) {
+
+		$title = strip_tags($title); //removes html tags 
+		$title = mysqli_real_escape_string($this->con, $title);
+
+		$phone = strip_tags($phone); //removes html tags 
+		$phone = mysqli_real_escape_string($this->con, $phone);
+
+		$email = strip_tags($email); //removes html tags 
+		$email = mysqli_real_escape_string($this->con, $email);
+
+		$stipend_amount = strip_tags($stipend_amount); //removes html tags 
+		$stipend_amount = mysqli_real_escape_string($this->con, $stipend_amount);
+
+		$interest = strip_tags($interest); //removes html tags 
+		$interest = mysqli_real_escape_string($this->con, $interest);
+
 		$body = strip_tags($body); //removes html tags 
 		$body = mysqli_real_escape_string($this->con, $body);
 		$check_empty = preg_replace('/\s+/', '', $body); //Deltes all spaces 
       
 		if($check_empty != "") {
 
-
-			//Current date and time
 			$date_added = date("Y-m-d H:i:s");
-			//Get username
+
 			$added_by = $this->user_obj->getUsername();
 
-			//If user is on own profile, user_to is 'none'
+
 			if($user_to == $added_by) {
 				$user_to = "none";
 			}
 
 			//insert post 
-			$query = mysqli_query($this->con, "INSERT INTO posts VALUES('', '$body', '$added_by', '$user_to', '$date_added', 'no',0, 'no','$title', '$phone', '$email')");
+			$query = mysqli_query($this->con, "INSERT INTO posts VALUES('', '$body', '$added_by', '$user_to', '$date_added', 'no',0, 'no','$title', '$phone', '$email', '$stipend', '$stipend_amount', '$interest')");
+
 			$returned_id = mysqli_insert_id($this->con);
 
 			//Insert notification 
@@ -65,6 +80,18 @@ class Post {
 				$body = $row['body'];
 				$added_by = $row['added_by'];
 				$date_time = $row['date_added'];
+				$title = $row['title'];
+				$phone = $row['phone'];
+				$email = $row['email'];
+				$stipend = $row['stipend'];
+
+				$stipend_amount = $row['stipend_amount'];
+				if($stipend == "No")
+				{
+					$stipend_amount = "0";
+				}
+
+				$interest = $row['interest'];
 
 				//Prepare user_to string so it can be included even if not posted to a user
 				if($row['user_to'] == "none") {
@@ -81,9 +108,26 @@ class Post {
 				if($added_by_obj->isClosed()) {
 					continue;
 				}
-
+				?>
 				
+				<script>
 
+					function toggle<?php echo $id;?>(){
+						var element = document.getElementById("toggleComment<?php echo $id; ?>");
+						
+						console.log("hi <?php echo $id; ?>");
+						console.log(element.style.display);
+
+						if(element.style.display == 'block')
+							element.style.display = 'none';
+							
+						else 
+							element.style.display = 'block';
+					}
+
+				</script>
+
+				<?php
 					if($num_iterations++ < $start)
 						continue; 
 
@@ -167,21 +211,53 @@ class Post {
 						}
 					}
 
-					$str .= "<div class='status_post'>
-								<div class='post_profile_pic'>
-									<img src='$profile_pic' width='50'>
-								</div>
+					$str .= "<div class='all_posts'>
+					<div class='container-fluid' >
+			<div class='row'>
 
-								<div class='posted_by' style='color:#ACACAC;'>
-									<a href='$added_by'> $first_name $last_name </a> $user_to &nbsp;&nbsp;&nbsp;&nbsp;$time_message
-								</div>
-								<div id='post_body'>
-									$body
-									<br>
-								</div>
+				<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
+					<div class='post_profile_pic'>
+						<img src='$profile_pic' width='50'>
+						<a href='$added_by'> $first_name $last_name </a> $user_to &nbsp; &nbsp; &nbsp; &nbsp; $time_message
+					</div>
+				</div>
 
-							</div>
-							<hr>";
+				<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
+
+						<div id='post_body'>
+							<p><br>
+								<strong>Title: </strong>$title<br>
+								<strong>Contact: </strong>$phone <br>
+								<strong>Email: </strong>$email <br>
+								<strong>Interest:</strong> $interest<br>
+								<strong>Stipend:</strong> $stipend.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Amount: </strong>&nbsp;<i class='fas fa-rupee-sign rupees'></i> $stipend_amount<br>
+								<strong>Description:</strong><br>$body<br>
+
+
+							</p>
+						</div>
+
+						<hr>
+						<div class='comments-sec'>
+						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'>
+						&nbsp;
+						</div>
+						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4 comment' onClick='javascript:toggle$id()'>
+						<i class='far fa-comment-alt'>&nbsp;&nbsp;</i>comment
+						</div>
+						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'>
+						</div>
+						</div>
+				</div>
+			</div>
+		</div>
+
+	<div class='post_comment' id='toggleComment$id' style='display:none;' >
+		<iframe src='comment-frame.php?post_id=$id' id='comment_iframe' frameborder='0'> </iframe>
+	</div>
+	</div>
+	<br>
+	";
 				
 
 			} //End while loop
@@ -198,9 +274,9 @@ class Post {
 
 	}
 
-
-
-
 }
 
+
+
 ?>
+

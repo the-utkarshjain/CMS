@@ -15,37 +15,39 @@ else {
 
 <html>
 <head>
-	<title>Welcome to Swirlfeed</title>
+	<title>SCRI | IIT Mandi</title>
 
 	<!-- Javascript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="assets/js/bootstrap.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 </head>
 <body>
 
-	<div class="top_bar navbar navbar-inverse"> 
+	<nav class="top_bar navbar navbar-inverse"> 
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span> 
+				</button>
+				<a class="navbar-brand" href="index.php">SCRI | IIT Mandi</a>
+			</div>
 
-		<div class="logo navbar-brand">
-			<a href="index.php">SCRI | IIT Mandi</a>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><?php echo $_SESSION["username"]; ?></a></li>
+					<li><a href="includes/handlers/logout.php">Logout</a></li>
+				</ul>
+			</div>
 		</div>
-
-		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#"><?php echo $_SESSION["username"]; ?></a></li>
-      <!-- <li><a href="#"><i class="far fa-envelope"></i></a></li>
-      <li><a href="#"><i class="fas fa-home"></i></a></li>
-      <li><a href="#"><i class="far fa-bell"></i></a></li>
-      <li><a href="#"><i class="fas fa-users"></i></a></li>
-      <li><a href="#"><i class="fas fa-cog"></i></a></li> -->
-      <li><a href="includes/handlers/logout.php">Logout</a></li>
-		</ul>
-
-	</div>
+	</nav>
 
 
-	<div class="wrapper">
+	<div class="container">

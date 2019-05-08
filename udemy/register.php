@@ -7,10 +7,14 @@ require 'includes/form_handlers/login_handler.php';
 
 <html>
 <head>
-	<title>Welcome to Swirlfeed!</title>
+	
+	<title>SCRI | IIT MANDI</title>
+
 	<link rel="stylesheet" type="text/css" href="assets/css/register_style.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="assets/js/register.js"></script>
+
 </head>
 <body>
 
@@ -38,7 +42,7 @@ require 'includes/form_handlers/login_handler.php';
 		<div class="login_box">
 
 			<div class="login_header">
-				<h1>Swirlfeed!</h1>
+				<h1>SCRI | IIT MANDI</h1>
 				Login or sign up below!
 			</div>
 			<br>
@@ -49,7 +53,7 @@ require 'includes/form_handlers/login_handler.php';
 					if(isset($_SESSION['log_email'])) {
 						echo $_SESSION['log_email'];
 					} 
-					?>" required>
+					?>" required> 
 					<br>
 					<input type="password" name="log_password" placeholder="Password">
 					<br>
@@ -74,8 +78,6 @@ require 'includes/form_handlers/login_handler.php';
 					<?php if(in_array("Your first name must be between 2 and 25 characters<br>", $error_array)) echo "Your first name must be between 2 and 25 characters<br>"; ?>
 					
 					
-
-
 					<input type="text" name="reg_lname" placeholder="Last Name" value="<?php 
 					if(isset($_SESSION['reg_lname'])) {
 						echo $_SESSION['reg_lname'];
@@ -110,11 +112,19 @@ require 'includes/form_handlers/login_handler.php';
 					else if(in_array("Your password can only contain english characters or numbers<br>", $error_array)) echo "Your password can only contain english characters or numbers<br>";
 					else if(in_array("Your password must be betwen 5 and 30 characters<br>", $error_array)) echo "Your password must be betwen 5 and 30 characters<br>"; ?>
 
-					<input type="radio" name="type" value="student" checked> Student
-  					<input type="radio" name="type" value="professor"> Professor<br><br>
+					<input type="radio" class="type" name="type" value="student" required> Student
+  					<input type="radio" class="type" name="type" value="professor" required> Professor<br><br>
 
+  					<div class="subtype">
+  					<input type="radio" name="sub-type"  value="btech">B.Tech 
+  					<input type="radio" name="sub-type"  value="mtech">M.Tech
+  					<input type="radio" name="sub-type"  value="ms">Ms
+  					<input type="radio" name="sub-type"  value="msc">Msc
+  					<input type="radio" name="sub-type"  value="phd">PhD
+  					<br><br>
+  					</div>
 
-					<input type="submit" name="register_button" value="Register">
+					<input type="submit" name="register_button" id="register_button" value="Register">
 					<br>
 
 					<?php if(in_array("<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>", $error_array)) echo "<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>"; ?>
@@ -125,6 +135,27 @@ require 'includes/form_handlers/login_handler.php';
 		</div>
 
 	</div>
+
+<script type="text/javascript">
+
+$(".subtype").hide();
+$(document).ready(function () {
+
+$(".type").change(function () {
+
+    var val = $('.type:checked').val();
+    if(val == "student"){
+    	$(".subtype").slideDown("fast");
+    	$(".subtype input[type=radio]").prop('required',true);
+    }
+    else{
+    	$(".subtype").slideUp("fast");
+    	$(".subtype input[type=radio]").prop('required',false);
+    }
+});
+});
+
+</script>
 
 
 </body>

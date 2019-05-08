@@ -13,6 +13,11 @@ class User {
 		return $this->user['username'];
 	}
 
+	public function getprofilepic()
+	{
+		return $this->user['profile_pic'];
+	}
+
 	public function getNumPosts() {
 		$username = $this->user['username'];
 		$query = mysqli_query($this->con, "SELECT num_posts FROM users WHERE username='$username'");
