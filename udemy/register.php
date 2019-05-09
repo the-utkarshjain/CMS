@@ -112,15 +112,15 @@ require 'includes/form_handlers/login_handler.php';
 					else if(in_array("Your password can only contain english characters or numbers<br>", $error_array)) echo "Your password can only contain english characters or numbers<br>";
 					else if(in_array("Your password must be betwen 5 and 30 characters<br>", $error_array)) echo "Your password must be betwen 5 and 30 characters<br>"; ?>
 
-					<input type="radio" class="type" name="type" value="student" required> Student
-  					<input type="radio" class="type" name="type" value="professor" required> Professor<br><br>
+					<input type="radio" class="type" name="type" value="Student" required> Student
+  					<input type="radio" class="type" name="type" value="Professor" required> Professor<br><br>
 
   					<div class="subtype">
-  					<input type="radio" name="sub-type"  value="btech">B.Tech 
-  					<input type="radio" name="sub-type"  value="mtech">M.Tech
-  					<input type="radio" name="sub-type"  value="ms">Ms
-  					<input type="radio" name="sub-type"  value="msc">Msc
-  					<input type="radio" name="sub-type"  value="phd">PhD
+  					<input type="radio" name="sub-type"  value="B.Tech">B.Tech 
+  					<input type="radio" name="sub-type"  value="M.Tech">M.Tech
+  					<input type="radio" name="sub-type"  value="Ms">Ms
+  					<input type="radio" name="sub-type"  value="Msc">Msc
+  					<input type="radio" name="sub-type"  value="PhD">PhD
   					<br><br>
   					</div>
 
@@ -139,12 +139,13 @@ require 'includes/form_handlers/login_handler.php';
 <script type="text/javascript">
 
 $(".subtype").hide();
+
 $(document).ready(function () {
 
-$(".type").change(function () {
+	$(".type").change(function () {
 
     var val = $('.type:checked').val();
-    if(val == "student"){
+    if(val == "Student"){
     	$(".subtype").slideDown("fast");
     	$(".subtype input[type=radio]").prop('required',true);
     }

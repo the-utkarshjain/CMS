@@ -1,5 +1,6 @@
 <?php
 class Post {
+
 	private $user_obj;
 	private $con;
 
@@ -9,6 +10,8 @@ class Post {
 	}
 
 	public function submitPost($title, $phone, $email, $body, $user_to, $stipend, $stipend_amount, $interest) {
+
+		/*CLEANING THE INPUTS*/
 
 		$title = strip_tags($title); //removes html tags 
 		$title = mysqli_real_escape_string($this->con, $title);
@@ -28,7 +31,11 @@ class Post {
 		$body = strip_tags($body); //removes html tags 
 		$body = mysqli_real_escape_string($this->con, $body);
 		$check_empty = preg_replace('/\s+/', '', $body); //Deltes all spaces 
-      
+
+
+
+		/*INSERTING POSTS ONLY IF BODY IS NOT EMPTY*/
+
 		if($check_empty != "") {
 
 			$date_added = date("Y-m-d H:i:s");
@@ -40,12 +47,13 @@ class Post {
 				$user_to = "none";
 			}
 
-			//insert post 
-			$query = mysqli_query($this->con, "INSERT INTO posts VALUES('', '$body', '$added_by', '$user_to', '$date_added', 'no',0, 'no','$title', '$phone', '$email', '$stipend', '$stipend_amount', '$interest')");
+			//Query to insert post
+
+			$query = mysqli_query($this->con, "INSERT INTO 
+				posts(id, body, added_by, user_to, date_added, user_closed, likes, deleted, title, phone, email, stipend, stipend_amount, interest) 
+				VALUES('', '$body', '$added_by', '$user_to', '$date_added', 'no', 0, 'no', '$title', '$phone', '$email', '$stipend', '$stipend_amount', '$interest')");
 
 			$returned_id = mysqli_insert_id($this->con);
-
-			//Insert notification 
 
 			//Update post count for user 
 			$num_posts = $this->user_obj->getNumPosts();
@@ -53,7 +61,11 @@ class Post {
 			$update_query = mysqli_query($this->con, "UPDATE users SET num_posts='$num_posts' WHERE username='$added_by'");
 
 		}
+
+		header("Location: index.php");
 	}
+
+	/*FUNCTION TO SHOW POSTS BY ALL*/
 
 	public function loadPostsFriends($data, $limit) {
 
@@ -120,7 +132,7 @@ class Post {
 
 						if(element.style.display == 'block')
 							element.style.display = 'none';
-							
+
 						else 
 							element.style.display = 'block';
 					}
@@ -128,27 +140,32 @@ class Post {
 				</script>
 
 				<?php
-					if($num_iterations++ < $start)
-						continue; 
-
+				if($num_iterations++ < $start)
+					continue; 
 
 					//Once 10 posts have been loaded, break
-					if($count > $limit) {
-						break;
-					}
-					else {
-						$count++;
-					}
+				if($count > $limit) {
+					break;
+				}
+				else {
+					$count++;
+				}
 
-					$user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic FROM users WHERE username='$added_by'");
-					$user_row = mysqli_fetch_array($user_details_query);
-					$first_name = $user_row['first_name'];
-					$last_name = $user_row['last_name'];
-					$profile_pic = $user_row['profile_pic'];
+				$user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic FROM users WHERE username='$added_by'");
 
+				$user_row = mysqli_fetch_array($user_details_query);
+
+				$first_name = $user_row['first_name'];
+				$last_name = $user_row['last_name'];
+				$profile_pic = $user_row['profile_pic'];
+
+
+				$comments_check = mysqli_query($this->con, "SELECT * FROM post_comments WHERE post_id='$id'");
+
+				$comments_check_num = mysqli_num_rows($comments_check);
 
 					//Timeframe
-					$date_time_now = date("Y-m-d H:i:s");
+				$date_time_now = date("Y-m-d H:i:s");
 					$start_date = new DateTime($date_time); //Time of post
 					$end_date = new DateTime($date_time_now); //Current time
 					$interval = $start_date->diff($end_date); //Difference between dates 
@@ -212,7 +229,7 @@ class Post {
 					}
 
 					$str .= "<div class='all_posts'>
-					<div class='container-fluid' >
+		<div class='container-fluid' >
 			<div class='row'>
 
 				<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
@@ -224,47 +241,51 @@ class Post {
 
 				<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
 
-						<div id='post_body'>
-							<p><br>
-								<strong>Title: </strong>$title<br>
-								<strong>Contact: </strong>$phone <br>
-								<strong>Email: </strong>$email <br>
-								<strong>Interest:</strong> $interest<br>
-								<strong>Stipend:</strong> $stipend.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Amount: </strong>&nbsp;<i class='fas fa-rupee-sign rupees'></i> $stipend_amount<br>
-								<strong>Description:</strong><br>$body<br>
+					<div id='post_body'>
+						<p><br>
+							<strong>Title: </strong>$title<br>
+							<strong>Contact: </strong>$phone <br>
+							<strong>Email: </strong><a href='mailto:$email'>$email</a> <br>
+							<strong>Interest:</strong> $interest<br>
+							<strong>Stipend:</strong> $stipend.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Amount: </strong>&nbsp;<i class='fas fa-rupee-sign rupees'></i> $stipend_amount<br><br>
+							<strong>Description:</strong><br>$body<br>
 
 
-							</p>
-						</div>
+						</p>
+					</div>
 
-						<hr>
-						<div class='comments-sec'>
-						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'>
-						&nbsp;
+					<hr>
+					<div class='comments-sec'>
+
+						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4 like'>
+							<div class='newsfeedPostOptions'>
+								<iframe src='like.php?post_id=$id' scrolling='no'></iframe>
+							</div>
 						</div>
 						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4 comment' onClick='javascript:toggle$id()'>
-						<i class='far fa-comment-alt'>&nbsp;&nbsp;</i>comment
+							<i class='far fa-comment-alt'>&nbsp;&nbsp;</i>Comment&nbsp;&nbsp;<span style='color:black;'>($comments_check_num)</span>
 						</div>
 						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'>
 						</div>
-						</div>
+						
+					</div>
 				</div>
 			</div>
 		</div>
-
-	<div class='post_comment' id='toggleComment$id' style='display:none;' >
-		<iframe src='comment-frame.php?post_id=$id' id='comment_iframe' frameborder='0'> </iframe>
-	</div>
+		
+		<div class='post_comment' id='toggleComment$id' style='display:none;' >
+			<iframe src='comment-frame.php?post_id=$id' id='comment_iframe' frameborder='0'> </iframe>
+		</div>
 	</div>
 	<br>
-	";
-				
+					";
 
-			} //End while loop
+
+			} //WHILE LOOP ENDS HERE
 
 			if($count > $limit) 
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
-							<input type='hidden' class='noMorePosts' value='false'>";
+			<input type='hidden' class='noMorePosts' value='false'>";
 			else 
 				$str .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align: centre;'> No more posts to show! </p>";
 		}
@@ -273,6 +294,7 @@ class Post {
 
 
 	}
+
 
 }
 

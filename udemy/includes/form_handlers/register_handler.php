@@ -1,5 +1,7 @@
 <?php
+
 //Declaring variables to prevent errors
+
 $fname = ""; //First name
 $lname = ""; //Last name
 $em = ""; //email
@@ -14,11 +16,12 @@ if(isset($_POST['register_button'])){
 	//Registration form values
 	$type = $_POST['type'];
 
-	if($type=="student"){
+	if($type=="Student"){
 	$subtype = $_POST['sub-type'];
 	}
+
 	else{
-		$subtype = "prof.";
+		$subtype = "Prof.";
 	}
 	//First name
 	$fname = strip_tags($_POST['reg_fname']); //Remove html tags
@@ -117,15 +120,34 @@ if(isset($_POST['register_button'])){
 		}
 
 		//Profile picture assignment
-		$rand = rand(1, 2); //Random number between 1 and 2
+		$rand = rand(1, 7); //Random number between 1 and 2
 
 		if($rand == 1)
-			$profile_pic = "assets/images/profile_pics/defaults/head_deep_blue.png";
+			$profile_pic = "assets/images/profile_pics/defaults/icons8-boy.png";
+
 		else if($rand == 2)
-			$profile_pic = "assets/images/profile_pics/defaults/head_emerald.png";
+			$profile_pic = "assets/images/profile_pics/defaults/icons8-businesswoman.png";
+
+		else if($rand == 3)
+			$profile_pic = "assets/images/profile_pics/defaults/icons8-manager.png";
+
+		else if($rand == 4)
+			$profile_pic = "assets/images/profile_pics/defaults/icons8-user_female_red_hair.png";
+
+		else if($rand == 5)
+			$profile_pic = "assets/images/profile_pics/defaults/icons8-user_female_skin_type_5.png";
+
+		else if($rand == 6)
+			$profile_pic = "assets/images/profile_pics/defaults/icons8-user_female.png";
+
+		else if($rand == 7)
+			$profile_pic = "assets/images/profile_pics/defaults/icons8-user_male.png";
 
 
-		$query = mysqli_query($con, "INSERT INTO users VALUES ('', '$fname', '$lname', '$username', '$em', '$password', '$date', '$profile_pic', '0', '0', 'no', ',', '$type', '$subtype')");
+
+		$query = mysqli_query($con, "INSERT INTO
+			 users(id, first_name, last_name, username, email, password, signup_date, profile_pic, num_posts, num_likes, user_closed, friend_array, type, subtype)
+			 VALUES ('', '$fname', '$lname', '$username', '$em', '$password', '$date', '$profile_pic', '0', '0', 'no', ',', '$type', '$subtype')");
 
 		array_push($error_array, "<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>");
 
