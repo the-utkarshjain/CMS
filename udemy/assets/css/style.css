@@ -92,6 +92,9 @@ textarea:focus {
   background: #3EC1D5;
 }
 
+#post_button:focus{
+  outline: none;
+}
 
 .status_post {
 	width: 96%;
@@ -205,6 +208,10 @@ hr{
   	border: 1px solid #3EC1D5;
   	background: #3EC1D5;
   	cursor: pointer;
+}
+
+#comment_button:focus{
+  outline: none;
 }
 
 .like{

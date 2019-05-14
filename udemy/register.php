@@ -10,10 +10,14 @@ require 'includes/form_handlers/login_handler.php';
 	
 	<title>SCRI | IIT MANDI</title>
 
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/register_style.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="assets/js/register.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700|Raleway:300,400,400i,500,500i,700,800,900" rel="stylesheet">
 
 </head>
 <body>
@@ -37,13 +41,14 @@ require 'includes/form_handlers/login_handler.php';
 
 	?>
 
-	<div class="wrapper">
+	<div class="wrapper container">
 
 		<div class="login_box">
-
 			<div class="login_header">
-				<h1>SCRI | IIT MANDI</h1>
-				Login or sign up below!
+				<img id="photo_login" src="login.jpg">
+				<!-- <h1>SCRI | IIT MANDI</h1> --><br>
+				Login or sign up below!<br>
+				<hr>
 			</div>
 			<br>
 			<div id="first">
@@ -58,8 +63,8 @@ require 'includes/form_handlers/login_handler.php';
 					<input type="password" name="log_password" placeholder="Password">
 					<br>
 					<?php if(in_array("Email or password was incorrect<br>", $error_array)) echo  "Email or password was incorrect<br>"; ?>
-					<input type="submit" name="login_button" value="Login">
-					<br>
+					<input type="submit" name="login_button" id="login_button" value="Login">
+					<br><br>
 					<a href="#" id="signup" class="signup">Need and account? Register here!</a>
 
 				</form>
@@ -112,22 +117,23 @@ require 'includes/form_handlers/login_handler.php';
 					else if(in_array("Your password can only contain english characters or numbers<br>", $error_array)) echo "Your password can only contain english characters or numbers<br>";
 					else if(in_array("Your password must be betwen 5 and 30 characters<br>", $error_array)) echo "Your password must be betwen 5 and 30 characters<br>"; ?>
 
-					<input type="radio" class="type" name="type" value="Student" required> Student
-  					<input type="radio" class="type" name="type" value="Professor" required> Professor<br><br>
+					<input type="radio" class="type" name="type" value="Student" required> &nbsp;Student&nbsp;
+					<input type="radio" class="type" name="type" value="Faculty" required> &nbsp;Faculty<br><br>
 
-  					<div class="subtype">
-  					<input type="radio" name="sub-type"  value="B.Tech">B.Tech 
-  					<input type="radio" name="sub-type"  value="M.Tech">M.Tech
-  					<input type="radio" name="sub-type"  value="Ms">Ms
-  					<input type="radio" name="sub-type"  value="Msc">Msc
-  					<input type="radio" name="sub-type"  value="PhD">PhD
-  					<br><br>
-  					</div>
+					<div class="subtype">
+					<input type="radio" name="sub-type"  value="B.Tech">&nbsp;B.Tech&nbsp;
+					<input type="radio" name="sub-type"  value="M.Tech">&nbsp;M.Tech&nbsp;
+					<input type="radio" name="sub-type"  value="M.S.">&nbsp;M.S.&nbsp;
+					<input type="radio" name="sub-type"  value="M.Sc.">&nbsp;M.Sc.&nbsp;
+					<input type="radio" name="sub-type"  value="PhD">&nbsp;PhD
+					<br><br>
+					</div>
 
 					<input type="submit" name="register_button" id="register_button" value="Register">
 					<br>
 
-					<?php if(in_array("<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>", $error_array)) echo "<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>"; ?>
+					<?php if(in_array("<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>", $error_array)) echo "<span style='color: #5bcac4;'><br>You're all set! Go ahead and login!</span>"; ?>
+					<br>
 					<a href="#" id="signin" class="signin">Already have an account? Sign in here!</a>
 				</form>
 			</div>
