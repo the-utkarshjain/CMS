@@ -68,7 +68,7 @@
 		$user_total_likes++;
 		$user_like  = mysqli_query($con,"UPDATE users SET num_likes = '$user_total_likes' WHERE username='$user_added_by'");
 
-		$add_like = mysqli_query($con,"INSERT INTO likes(id, username, post_id) VALUES('','$userLoggedIn','$post_id')");
+		$add_like = mysqli_query($con,"INSERT INTO likes( username, post_id) VALUES('$userLoggedIn','$post_id')");
 	}
 
 	/*UNLIKE BUTTON HANDLER*/

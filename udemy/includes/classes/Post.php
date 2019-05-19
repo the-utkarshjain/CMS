@@ -9,6 +9,10 @@ class Post {
 		$this->user_obj = new User($con, $user);
 	}
 
+	public function isStudent(){
+		return $this->user_obj->isStudent();
+	}
+
 	public function submitPost($title, $phone, $email, $body, $user_to, $stipend, $stipend_amount, $interest) {
 
 		/*CLEANING THE INPUTS*/
@@ -33,7 +37,6 @@ class Post {
 		$check_empty = preg_replace('/\s+/', '', $body); //Deltes all spaces 
 
 
-
 		/*INSERTING POSTS ONLY IF BODY IS NOT EMPTY*/
 
 		if($check_empty != "") {
@@ -50,8 +53,12 @@ class Post {
 			//Query to insert post
 
 			$query = mysqli_query($this->con, "INSERT INTO 
-				posts(id, body, added_by, user_to, date_added, user_closed, likes, deleted, title, phone, email, stipend, stipend_amount, interest) 
-				VALUES('', '$body', '$added_by', '$user_to', '$date_added', 'no', 0, 'no', '$title', '$phone', '$email', '$stipend', '$stipend_amount', '$interest')");
+				posts( body, added_by, user_to, date_added, user_closed, likes, deleted, title, phone, email, stipend, stipend_amount, interest) 
+				VALUES('$body', '$added_by', '$user_to', '$date_added', 'no', 0, 'no', '$title', '$phone', '$email', '$stipend', '$stipend_amount', '$interest')");
+
+
+			echo $temp;
+
 
 			$returned_id = mysqli_insert_id($this->con);
 
@@ -96,6 +103,7 @@ class Post {
 				$phone = $row['phone'];
 				$email = $row['email'];
 				$stipend = $row['stipend'];
+				// $type = $row['type'];
 
 				$stipend_amount = $row['stipend_amount'];
 				if($stipend == "No")
@@ -150,6 +158,13 @@ class Post {
 				else {
 					$count++;
 				}
+
+
+				if($userLoggedIn == $added_by)
+					$delete_button = "<button class='delete_button btn-danger' id='post$id'><i class='fas fa-times'></i></button>";
+				else 
+					$delete_button = "";
+
 
 				$user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic FROM users WHERE username='$added_by'");
 
@@ -228,57 +243,88 @@ class Post {
 						}
 					}
 
-					$str .= "<div class='all_posts'>
-		<div class='container-fluid' >
-			<div class='row'>
+					$str .= "<div class='all_posts hoverpost$id'>
+					<div class='container-fluid' >
+					<div class='row'>
 
-				<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
+					<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
 					<div class='post_profile_pic'>
-						<img src='$profile_pic' width='50'>
-						<a href='$added_by'> $first_name $last_name </a> $user_to &nbsp; &nbsp; &nbsp; &nbsp; $time_message
+					<img src='$profile_pic' class='isDiabled'  width='50'>
+					<a href='$added_by' class='isDisabled'> $first_name $last_name </a> $user_to &nbsp; &nbsp; &nbsp; &nbsp; $time_message $delete_button
 					</div>
-				</div>
+					</div>
 
-				<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
+					<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
 
 					<div id='post_body'>
-						<p><br>
-							<strong>Title: </strong>$title<br>
-							<strong>Contact: </strong>$phone <br>
-							<strong>Email: </strong><a href='mailto:$email'>$email</a> <br>
-							<strong>Interest:</strong> $interest<br>
-							<strong>Stipend:</strong> $stipend.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Amount: </strong>&nbsp;<i class='fas fa-rupee-sign rupees'></i> $stipend_amount<br><br>
-							<strong>Description:</strong><br>$body<br>
-
-
-						</p>
+					<p><br>
+					<strong>Title: </strong>$title<br>
+					<strong>Contact: </strong>$phone <br>
+					<strong>Email: </strong><a href='mailto:$email'>$email</a> <br>
+					<strong>Interest:</strong> $interest<br>
+					<strong>Stipend:</strong> $stipend.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Amount: </strong>&nbsp;<i class='fas fa-rupee-sign rupees'></i> $stipend_amount<br>
+					</p>
+					<p style='overflow-wrap: break-word; hyphens:auto;'>
+					<strong>Description:</strong><br>$body<br>
+					</p>
 					</div>
 
 					<hr>
 					<div class='comments-sec'>
 
-						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4 like'>
-							<div class='newsfeedPostOptions'>
-								<iframe src='like.php?post_id=$id' scrolling='no'></iframe>
-							</div>
-						</div>
-						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4 comment' onClick='javascript:toggle$id()'>
-							<i class='far fa-comment-alt'>&nbsp;&nbsp;</i>Comment&nbsp;&nbsp;<span style='color:black;'>($comments_check_num)</span>
-						</div>
-						<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'>
-						</div>
-						
+					<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4 like'>
+					<div class='newsfeedPostOptions'>
+					<iframe src='like.php?post_id=$id' scrolling='no'></iframe>
 					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class='post_comment' id='toggleComment$id' style='display:none;' >
-			<iframe src='comment-frame.php?post_id=$id' id='comment_iframe' frameborder='0'> </iframe>
-		</div>
-	</div>
-	<br>
+					</div>
+					<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4 comment' onClick='javascript:toggle$id()'>
+					<i class='far fa-comment-alt'>&nbsp;&nbsp;</i>Comment&nbsp;&nbsp;<span style='color:black;'>($comments_check_num)</span>
+					</div>
+					<div class='col-xs-4 col-sm-4 col-md-4 col-lg-4'>
+					</div>
+
+					</div>
+					</div>
+					</div>
+					</div>
+
+					<div class='post_comment' id='toggleComment$id' style='display:none;' >
+					<iframe src='comment-frame.php?post_id=$id' id='comment_iframe' frameborder='0'> </iframe>
+					</div>
+					</div>
+					<br>
+
 					";
+
+					?>
+					<script>
+
+						$(document).ready(function() {
+
+							$('#post<?php echo $id; ?>').hide();
+
+							$('.hoverpost<?php echo $id; ?>').hover(function(){
+								$('#post<?php echo $id; ?>').slideDown("fast");
+							},function(){
+								$('#post<?php echo $id; ?>').slideUp("fast");
+							});
+
+							$('#post<?php echo $id; ?>').on('click', function() {
+								bootbox.confirm("Are you sure you want to delete this post?", function(result) {
+
+									$.post("includes/form_handlers/delete_post.php?post_id=<?php echo $id; ?>", {result:result});
+
+									if(result)
+										location.reload();
+
+								});
+							});
+
+							
+						});
+
+					</script>
+					<?php
 
 
 			} //WHILE LOOP ENDS HERE

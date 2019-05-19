@@ -75,8 +75,8 @@ else {
 		$date = date("Y-m-d H:i:s");
 
 		$query = mysqli_query($con,"INSERT INTO 
-			post_comments(id, post_body, posted_by, posted_to, date_added, removed, post_id)
-			VALUES('','$comment_body','$userLoggedIn','$added_bys','$date','no','$post_id')");
+			post_comments( post_body, posted_by, posted_to, date_added, removed, post_id)
+			VALUES('$comment_body','$userLoggedIn','$added_bys','$date','no','$post_id')");
 	}
 
 	?>
@@ -185,12 +185,12 @@ else {
 					<div class="comment_section">
 
 						<div width="20%" style="float:left">
-							<a href="<?php echo $posted_by?>" target="_parent">
+							<a href="<?php echo $posted_by?>" class="isDisabled"  target="_parent">
 								<img src="<?php echo $user->getprofilepic();?>" title="<?php echo $user->getFirstAndLastName()?>" height="30"></a></div>
 
 						<div width="80%">
 
-							<a href="<?php echo $posted_by?>" target="_parent"><?php echo $user->getFirstAndLastName()?></a> &nbsp; &nbsp; &nbsp; &nbsp; <?php echo $time_message;?><br>
+							<a href="<?php echo $posted_by?>" target="_parent" class="isDisabled"><?php echo $user->getFirstAndLastName()?></a> &nbsp; &nbsp; &nbsp; &nbsp; <?php echo $time_message;?><br>
 							<?php echo $comment_body_2; ?></div>
 
 						</div>

@@ -14,6 +14,7 @@ class User {
 
 	public function getUsername() {
 		return $this->user['username'];
+		echo "<script> console.log('<?php echo $this->user['username'] ?>')</script>";
 	}
 
 	public function getprofilepic()
@@ -53,6 +54,21 @@ class User {
 
 		if($row['user_closed'] == 'yes')
 			return true;
+
+		else 
+			return false;
+	}
+
+	public function isStudent(){
+		$username = $this->user['username'];
+		
+		$query = mysqli_query($this->con,"SELECT type FROM users WHERE username='$username'");
+
+		$row = mysqli_fetch_array($query);
+
+		if($row['type'] == "Student"){
+			return true;
+		}
 
 		else 
 			return false;

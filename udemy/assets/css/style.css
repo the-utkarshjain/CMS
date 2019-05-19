@@ -2,6 +2,12 @@ html, body {
   height: 100%;
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 body {
   background: #fff none repeat scroll 0 0;
   color: #444;
@@ -14,6 +20,13 @@ body {
 
 .post_form {
 	width: 100%;
+}
+
+.isDisabled{
+  cursor: not-allowed;
+  opacity: 1;
+  text-decoration: none;
+  pointer-events: none;
 }
 
 #title, #phone, #email, #interest{
@@ -71,6 +84,26 @@ textarea:focus {
 .all_posts .comment{
 	cursor: pointer;
 	text-align: center;
+}
+
+.delete_button{
+  height: 22px;
+  width: 22px;
+  padding: 0;
+  float: right;
+  border-radius: 4px;
+  top: 10px;
+  right: -15px;
+  position: relative;
+  border: none;
+}
+
+.close:focus, .delete_button:focus{
+  outline: 0;
+}
+
+.modal-footer .btn-primary:focus, .modal-footer .btn-default:focus{
+  outline: 0;
 }
 
 #post_button {
@@ -296,7 +329,7 @@ hr{
   color: #fff;
   font-size: 15px;
   padding: 24px 0px;
-  text-transform: capitalize;
+  /*text-transform: capitalize;*/
   letter-spacing: 1px;
 
 }
@@ -537,7 +570,7 @@ a:active, a:hover {
   padding: 5px 10px;
   position: relative;
   text-decoration: none;
-  text-transform: capitalize;
+  /*text-transform: capitalize;*/
   transition: all 0.4s ease 0s;
   width: 70px;
   text-align: center;

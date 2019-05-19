@@ -3,6 +3,8 @@ include("includes/header.php");
 include("includes/classes/User.php");
 include("includes/classes/Post.php");
 
+$post1 = new Post($con, $userLoggedIn);
+$isStudent = $post1->isStudent();
 
 if(isset($_POST['post'])){
 	$post = new Post($con, $userLoggedIn);
@@ -17,10 +19,10 @@ if(isset($_POST['post'])){
 		<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
 
 			<div class="profile" style="text-align: center;">
-				<a href="<?php echo $userLoggedIn; ?>">  <img src="<?php echo $user['profile_pic']; ?>"> </a><br>
+				<a href="<?php echo $userLoggedIn; ?>" class="isDisabled">  <img src="<?php echo $user['profile_pic']; ?>"> </a><br>
 				<br>
 
-				<a href="<?php echo $userLoggedIn; ?>">
+				<a href="<?php echo $userLoggedIn; ?>" class="isDisabled">
 					<?php 
 					echo $user['first_name'] . " " . $user['last_name'];
 					?>
@@ -55,6 +57,15 @@ if(isset($_POST['post'])){
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 							<p>Phone: <br><input type="number" name="phone" id="phone" placeholder="Contact Number" style="width:80%"></p>
 						</div>
+						<script>
+							$(function() {
+								$("#phone").keypress(function(event) {
+									if (event.which != 8 && event.which != 0 && (event.which < 48 || event.which > 57)) {
+										return false;
+									}
+								});
+							});
+						</script>
 					</div>
 
 					<br>
@@ -65,19 +76,28 @@ if(isset($_POST['post'])){
 
 						<p>Research area / Interest:<br> <input type="text" name="interest" id="interest"></p><br>
 
-						<p>Is stipend available? &nbsp;&nbsp;
-							<input type="radio" class="stipend" name="stipend" value="Yes" required> Yes &nbsp;
-							<input type="text" class="stipend_amount" name="stipend_amount" placeholder="Enter amount">
-							&nbsp;
-							<input type="radio" class="stipend" name="stipend" value="No" required> No
-						</p>
+						<div id="isStipend">
+							<p>Is stipend available? &nbsp;&nbsp;
+								<input type="radio" class="stipend" name="stipend" value="Yes" required> Yes &nbsp;
+								<input type="text" class="stipend_amount" name="stipend_amount" placeholder="Enter amount">
+								&nbsp;
+								<input type="radio" class="stipend" name="stipend" value="No" required> No
+							</p>
+						</div>
 
 						<script type="text/javascript">
 
-							$(".stipend_amount").hide();
-
+							
 							$(document).ready(function(){
-								$(".stipend").change(function(){
+
+								if("<?php echo $isStudent; ?>"){
+									$("#isStipend").hide();
+									$("input[name='stipend'][value='No']").prop('checked',true);
+								}
+
+								else{
+									$(".stipend_amount").hide();
+									$(".stipend").change(function(){
 
 									var val = $('.stipend:checked').val();
 									if(val == "Yes"){
@@ -89,11 +109,13 @@ if(isset($_POST['post'])){
 										$(".stipend_amount").prop('required',false);
 									}
 								});
+
+								}
+								
 							});	
 
 						</script>
 
-						<br>
 						<button type="submit" name="post" id="post_button" value="Post">Post</button>
 
 					</form>

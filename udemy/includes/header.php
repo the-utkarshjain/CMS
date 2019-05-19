@@ -16,10 +16,13 @@ else {
 <html>
 <head>
 	<title>SCRI | IIT Mandi</title>
+	<link href="favicon.png" rel="icon" type="image">
+  	<link href="favicon.png" rel="apple-touch-icon" type="image">
 
 	<!-- Javascript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/bootbox.min.js"></script>
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -27,6 +30,7 @@ else {
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
 
 	<!-- FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700|Raleway:300,400,400i,500,500i,700,800,900" rel="stylesheet">
@@ -55,7 +59,7 @@ else {
               <div class="collapse navbar-collapse main-menu" id="navbar-example">
                 <ul class="nav navbar-nav navbar-right">
 
-                  <li><a href="<?php echo $_SESSION["username"]; ?>"><?php echo $_SESSION["username"]; ?></a></li>
+                  <li><a href="<?php echo $_SESSION["username"]; ?>" class="isDisabled"><?php echo $_SESSION["username"]; ?></a></li>
                   <li><a href="index.php">Home</a></li>
 				  <li><a href="includes/handlers/logout.php">Logout</a></li>
 
