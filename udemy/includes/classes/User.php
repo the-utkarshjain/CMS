@@ -14,7 +14,6 @@ class User {
 
 	public function getUsername() {
 		return $this->user['username'];
-		echo "<script> console.log('<?php echo $this->user['username'] ?>')</script>";
 	}
 
 	public function getprofilepic()

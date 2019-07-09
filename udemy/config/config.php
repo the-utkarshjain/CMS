@@ -4,7 +4,7 @@ session_start();
 
 $timezone = date_default_timezone_set("Asia/Kolkata");
 
-$con = mysqli_connect("localhost", "root", "", "udemy"); //Connection variable
+$con = mysqli_connect("localhost", "scri", "SCRI@4321#", "scri"); //Connection variable
 
 if(mysqli_connect_errno()) 
 {

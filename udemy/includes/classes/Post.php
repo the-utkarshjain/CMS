@@ -103,7 +103,6 @@ class Post {
 				$phone = $row['phone'];
 				$email = $row['email'];
 				$stipend = $row['stipend'];
-				// $type = $row['type'];
 
 				$stipend_amount = $row['stipend_amount'];
 				if($stipend == "No")
@@ -166,14 +165,14 @@ class Post {
 					$delete_button = "";
 
 
-				$user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic FROM users WHERE username='$added_by'");
+				$user_details_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_pic, subtype FROM users WHERE username='$added_by'");
 
 				$user_row = mysqli_fetch_array($user_details_query);
 
 				$first_name = $user_row['first_name'];
 				$last_name = $user_row['last_name'];
 				$profile_pic = $user_row['profile_pic'];
-
+				$subtype = $user_row['subtype'];
 
 				$comments_check = mysqli_query($this->con, "SELECT * FROM post_comments WHERE post_id='$id'");
 
@@ -250,7 +249,8 @@ class Post {
 					<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
 					<div class='post_profile_pic'>
 					<img src='$profile_pic' class='isDiabled'  width='50'>
-					<a href='$added_by' class='isDisabled'> $first_name $last_name </a> $user_to &nbsp; &nbsp; &nbsp; &nbsp; $time_message $delete_button
+					<a href='$added_by' class='isDisabled'> $first_name $last_name </a> $user_to, $subtype &nbsp;&nbsp; &nbsp; &nbsp; $time_message $delete_button<br>
+					
 					</div>
 					</div>
 
@@ -262,7 +262,7 @@ class Post {
 					<strong>Contact: </strong>$phone <br>
 					<strong>Email: </strong><a href='mailto:$email'>$email</a> <br>
 					<strong>Interest:</strong> $interest<br>
-					<strong>Stipend:</strong> $stipend.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Amount: </strong>&nbsp;<i class='fas fa-rupee-sign rupees'></i> $stipend_amount<br>
+					<span id='showstipend'><strong>Stipend:</strong> $stipend.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Amount: </strong>&nbsp;<i class='fas fa-rupee-sign rupees'></i> $stipend_amount<br></span>
 					</p>
 					<p style='overflow-wrap: break-word; hyphens:auto;'>
 					<strong>Description:</strong><br>$body<br>

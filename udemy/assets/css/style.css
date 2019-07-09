@@ -60,14 +60,14 @@ body {
 }
 
 .post_form textarea {
-
-	border: none;
-	border-bottom: 1px solid black;
+	resize: none;	
+	border: 1px solid black;
+	margin-top: 15px;
 	width: 91%;
-	height: 60px;
+	height: 200px;
 	border-radius: 3px;
 	margin-right: 10px;
-	padding: 20px 10px;
+	padding: 10px 10px;
 }
 
 textarea:focus {
@@ -329,7 +329,7 @@ hr{
   color: #fff;
   font-size: 15px;
   padding: 24px 0px;
-  /*text-transform: capitalize;*/
+/*  text-transform: capitalize; */
   letter-spacing: 1px;
 
 }
@@ -570,7 +570,7 @@ a:active, a:hover {
   padding: 5px 10px;
   position: relative;
   text-decoration: none;
-  /*text-transform: capitalize;*/
+  text-transform: capitalize;
   transition: all 0.4s ease 0s;
   width: 70px;
   text-align: center;

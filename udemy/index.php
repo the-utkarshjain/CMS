@@ -91,11 +91,11 @@ if(isset($_POST['post'])){
 							$(document).ready(function(){
 
 								if("<?php echo $isStudent; ?>"){
-									$("#isStipend").hide();
+									//$("#isStipend").hide();
 									$("input[name='stipend'][value='No']").prop('checked',true);
 								}
 
-								else{
+							//	else{
 									$(".stipend_amount").hide();
 									$(".stipend").change(function(){
 
@@ -110,7 +110,7 @@ if(isset($_POST['post'])){
 									}
 								});
 
-								}
+								//}
 								
 							});	
 

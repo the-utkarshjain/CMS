@@ -28,8 +28,8 @@ $str = "<h1>Confirmed.</h1>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no, minimum-scale=0.8, maximum-scale=0.9" />	
 	<title>SCRI | IIT MANDI</title>
-	<link href="../favicon.png" rel="icon" type="image">
-        <link href="../favicon.png" rel="apple-touch-icon" type="image">
+	<link href="favicon.png" rel="icon" type="image">
+        <link href="favicon.png" rel="apple-touch-icon" type="image">
 
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700|Raleway:300,400,400i,500,500i,700,800,900" rel="stylesheet">
 
@@ -46,7 +46,7 @@ $str = "<h1>Confirmed.</h1>
 			font-size: 60px;
 			font-family: "Raleway",Sans-serif;
 			margin-left: 20px;
-			margin-top: 15%;
+			margin-top: 20%;
 			line-height: 75px;
 		}
 

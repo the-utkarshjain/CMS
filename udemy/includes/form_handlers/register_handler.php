@@ -56,7 +56,7 @@ if(isset($_POST['register_button']))
 	//Password
 	$password = strip_tags($_POST['reg_password']); //Remove html tags
 	$password2 = strip_tags($_POST['reg_password2']); //Remove html tags
-
+	
 	$date = date("Y-m-d"); //Current date
 
 	if($em == $em) {
@@ -104,7 +104,7 @@ if(isset($_POST['register_button']))
 		}
 	}
 
-	if(strlen($password > 30 || strlen($password) < 5)) {
+	if(strlen($password) > 30 || strlen($password) < 5) {
 		array_push($error_array, "Your password must be betwen 5 and 30 characters<br>");
 	}
 
@@ -186,20 +186,35 @@ if(isset($_POST['register_button']))
 
     // Content
     $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->AddEmbeddedImage('SCRIlogo.jpg','SCRI');
     $mail->Subject = 'Please confirm your email';
-    $mail->Body    = "<h1><span style='color: #3ec1d5;'>SCRI</span> | IIT Mandi </h1><hr>
-    <h1 style='font-family: 'Raleway',Sans-serif;'>Before we get started...</h1>
-    <br>
-    <h2> Please take a second to make sure we've got your email right. </h2>
-    <p>
-    Click on <a href='$url'>this link</a> to do so.</p> 
-    <br><br>
-    Regards,
-    <br>SCRI | IIT Mandi<br>
-    Email: <a href='mailto: scri@students.iitmandi.ac.in'>scri@students.iitmandi.ac.in</a>
-    <br>
-    <a href='scri.iitmandi.ac.in/'>scri.iitmandi.ac.in/</a>";
-    $mail->AltBody = 'Body in plain text for non-HTML mail clients';
+    $mail->Body    = "<h1 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'><span style='color: #3ec1d5;'>SCRI</span> | IIT Mandi </h1><hr>
+                      <h2 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'>Hi $fname,</h2>
+                      <br>
+                      <h2>Before we get started please help us confirm that we got the right email.</h2>
+			<div style='font-size:15px;'>
+			<p>Simply click on the button to confirm your email:</p> 
+                        <button style=' background-color: #3ec1d5; border: none; color: white; padding: 10px; text-align: center; text-decoration: none; border-radius: 4px; font-size: 15px; margin: 4px 2px; cursor: pointer;'><a href='$url' style='color: white; text-decoration: none;'>Confirm</a></button><br><br><br>
+                        Cheers,<br>
+			<img src='cid:SCRI' width='100px'>
+                        <br>SCRI | IIT Mandi<br>
+                        Email: <a href='mailto: scri@students.iitmandi.ac.in'>scri@students.iitmandi.ac.in</a>
+                        <br>
+                        <a href='scri.iitmandi.ac.in/'>scri.iitmandi.ac.in/</a></div>";   
+
+    $mail->AltBody = "<h1 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'><span style='color: #3ec1d5;'>SCRI</span> | IIT Mandi </h1><hr>
+                      <h2 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'>Hi $fname,</h2>
+                      <br>
+                      <h2>Before we get started please help us confirm that we got the right email.</h2>
+			<div style='font-size:15px;'>
+			<p>Simply click on the button to confirm your email:</p> 
+                        <button style=' background-color: #3ec1d5; border: none; color: white; padding: 10px; text-align: center; text-decoration: none; border-radius: 4px; font-size: 15px; margin: 4px 2px; cursor: pointer;'><a href='$url' style='color: white; text-decoration: none;'>Confirm</a></button><br><br><br>
+                        Cheers,<br>
+			<img src='cid:SCRI' width='100px'>
+                        <br>SCRI | IIT Mandi<br>
+                        Email: <a href='mailto: scri@students.iitmandi.ac.in'>scri@students.iitmandi.ac.in</a>
+                        <br>
+                        <a href='scri.iitmandi.ac.in/'>scri.iitmandi.ac.in/</a></div>"; 
 
     $mail->send();
     header("Location: error/sent.html");

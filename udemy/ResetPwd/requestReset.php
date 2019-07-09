@@ -10,15 +10,27 @@ require 'PHPMailer/src/SMTP.php';
 require '../config/config.php';
 // Instantiation and passing `true` enables exceptions
 
+
 if(isset($_POST['forget_button'])){
 
     $emailto = $_POST['forget_email'];
     $emailto = strtolower($emailto);
 
+    $check_query = mysqli_query($con,"SELECT first_name,email from users WHERE email='$emailto'");
+    $num_rows = mysqli_num_rows($check_query);
+
+    if($num_rows == 0){
+        header("Location: ../error/oops.html");
+        exit();
+    }
+
+    $array = mysqli_fetch_array($check_query);
+$first_name = $array['first_name'];
+
     $code = uniqid(true);
     $date_add = date("Y-m-d");
 
-    $url = "http://". $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]). "/resetPassword.php?code=$code";
+    $url = "https://". $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]). "/resetPassword.php?code=$code";
 
     $query = mysqli_query($con,"INSERT INTO resetPassword(code,email,date_add) VALUES('$code','$emailto','$date_add')");
     
@@ -40,26 +52,48 @@ if(isset($_POST['forget_button'])){
     $mail->Port       = 465;                                    // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('utkarsh.j.99@gmail.com', 'SCRI | IIT Mandi');
+    $mail->setFrom('scri.noreply@gmail.com', 'SCRI | IIT Mandi');
     $mail->addAddress($emailto);     // Add a recipient
-    $mail->addReplyTo('no-reply@gmail.com', 'No reply');
+    $mail->addReplyTo('scri.noreply@gmail.com', 'No reply');
 
     // Content
     $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->AddEmbeddedImage('../SCRIlogo.jpg','SCRI');
     $mail->Subject = 'Password change request';
-    $mail->Body    = "<h1><span style='color: #3ec1d5;'>SCRI</span> | IIT Mandi </h1><hr>
-                      <h1 style='font-family: 'Raleway',Sans-serif;'>You requested a password change</h1>
+    $mail->Body    = "<h1 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'><span style='color: #3ec1d5;'>SCRI</span> | IIT Mandi </h1><hr>
+                      <h2 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'>Hi $first_name,</h2>
                       <br>
-                      <p>
-                        Click on <a href='$url'>this link</a> to do so.</p> 
+			<div style='font-size:15px;'>
+                      <p>We received a request to reset your password for your SCRI | IIT Mandi account: $emailto. We are here to help!</p>
+			<p>Simply click on the button to set a new password:</p> 
+                        <button style=' background-color: #3ec1d5; border: none; color: white; padding: 10px; text-align: center; text-decoration: none; border-radius: 4px; font-size: 15px; margin: 4px 2px; cursor: pointer;'><a href='$url' style='color: white; text-decoration: none;'>Reset Password</a></button><br>
+			<p><strong>Note:</strong> This link expires in 2 hours.</p>
+			<p>If you didn't ask to change your password, don't worry! Your password is still safe and you can delete this email.</p>
                         <br>
-                        Regards,<br>
+                        Cheers,<br>
+			<img src='cid:SCRI' width='100px'>
                         <br>SCRI | IIT Mandi<br>
                         Email: <a href='mailto: scri@students.iitmandi.ac.in'>scri@students.iitmandi.ac.in</a>
                         <br>
-                        <a href='scri.iitmandi.ac.in/'>scri.iitmandi.ac.in/</a>";
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                        <a href='scri.iitmandi.ac.in/'>scri.iitmandi.ac.in/</a></div>";
 
+    $mail->AltBody =  "<h1 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'><span style='color: #3ec1d5;'>SCRI</span> | IIT Mandi </h1><hr>
+                      <h2 style='font-family: 'Raleway',Sans-serif; font-weight: lighter'>Hi $first_name,</h2>
+                      <br>
+			<div style='font-size:15px;'>
+                      <p>We received a request to reset your password for your SCRI | IIT Mandi account: $emailto. We are here to help!</p>
+			<p>Simply click on the button to set a new password:</p> 
+                        <button style=' background-color: #3ec1d5; border: none; color: white; padding: 10px; text-align: center; text-decoration: none; border-radius: 4px; font-size: 15px; margin: 4px 2px; cursor: pointer;'><a href='$url' style='color: white; text-decoration: none;'>Reset Password</a></button><br>
+			<p><strong>Note:</strong> This link expires in 2 hours.</p>
+			<p>If you didn't ask to change your password, don't worry! Your password is still safe and you can delete this email.</p>
+                        <br>
+                        Cheers,<br>
+			<img src='cid:SCRI' width='100px'>
+                        <br>SCRI | IIT Mandi<br>
+                        Email: <a href='mailto: scri@students.iitmandi.ac.in'>scri@students.iitmandi.ac.in</a>
+                        <br>
+                        <a href='scri.iitmandi.ac.in/'>scri.iitmandi.ac.in/</a></div>";   
+			
     $mail->send();
     header("Location: ../error/sent.html");
     // echo 'Message has been sent';
